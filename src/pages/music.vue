@@ -86,11 +86,11 @@ export default {
     MmProgress,
     MusicBtn,
     Lyric,
-    Volume
+    Volume,
   },
   filters: {
     // 时间格式化
-    format
+    format,
   },
   data() {
     const volume = getVolume()
@@ -103,7 +103,7 @@ export default {
       nolyric: false, // 是否有歌词
       lyricIndex: 0, // 当前播放歌词下标
       isMute: false, // 是否静音
-      volume // 音量大小
+      volume, // 音量大小
     }
   },
   computed: {
@@ -124,8 +124,8 @@ export default {
       'orderList',
       'currentIndex',
       'currentMusic',
-      'historyList'
-    ])
+      'historyList',
+    ]),
   },
   watch: {
     currentMusic(newMusic, oldMusic) {
@@ -137,6 +137,8 @@ export default {
         return
       }
       this.audioEle.src = newMusic.url
+      console.log('this.audioEle.src')
+      console.log(newMusic.url)
       // 重置相关参数
       this.lyricIndex = this.currentTime = this.currentProgress = 0
       silencePromise(this.audioEle.play())
@@ -165,7 +167,7 @@ export default {
     },
     $route() {
       this.lyricVisible = false
-    }
+    },
   },
   mounted() {
     this.$nextTick(() => {
@@ -241,7 +243,7 @@ export default {
         return
       }
       const {
-        playlist: { length }
+        playlist: { length },
       } = this
       if (
         (length - 1 === this.currentIndex && this.mode === PLAY_MODE.ORDER) ||
@@ -330,7 +332,7 @@ export default {
         [PLAY_MODE.LIST_LOOP]: 'loop',
         [PLAY_MODE.ORDER]: 'sequence',
         [PLAY_MODE.RANDOM]: 'random',
-        [PLAY_MODE.LOOP]: 'loop-one'
+        [PLAY_MODE.LOOP]: 'loop-one',
       }[this.mode]
     },
     // 获取播放模式 title
@@ -340,7 +342,7 @@ export default {
         [PLAY_MODE.LIST_LOOP]: `列表循环 ${key}`,
         [PLAY_MODE.ORDER]: `顺序播放 ${key}`,
         [PLAY_MODE.RANDOM]: `随机播放 ${key}`,
-        [PLAY_MODE.LOOP]: `单曲循环 ${key}`
+        [PLAY_MODE.LOOP]: `单曲循环 ${key}`,
       }[this.mode]
     },
     // 查看歌词
@@ -357,9 +359,9 @@ export default {
     // 获取歌词
     _getLyric(id) {
       getLyric(id).then((res) => {
-        if (res.lrc && res.lrc.lyric) {
+        if (res.data && res.data.lyric) {
           this.nolyric = false
-          this.lyric = parseLyric(res.lrc.lyric)
+          this.lyric = parseLyric(res.data.lyric)
         } else {
           this.nolyric = true
         }
@@ -369,10 +371,10 @@ export default {
     ...mapMutations({
       setPlaying: 'SET_PLAYING',
       setPlaylist: 'SET_PLAYLIST',
-      setCurrentIndex: 'SET_CURRENTINDEX'
+      setCurrentIndex: 'SET_CURRENTINDEX',
     }),
-    ...mapActions(['setHistory', 'setPlayMode'])
-  }
+    ...mapActions(['setHistory', 'setPlayMode']),
+  },
 }
 </script>
 

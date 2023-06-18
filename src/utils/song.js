@@ -31,9 +31,9 @@ export function createSong(music) {
     name: music.name,
     singer: filterSinger(music.ar || music.artists),
     album: album.name,
-    image: toHttps(album.picUrl) || null,
+    image: album.picUrl || null,
     duration: duration / 1000,
-    url: `https://music.163.com/song/media/outer/url?id=${music.id}.mp3`
+    url: `http://peer.punengshuo.com/music/keainvren.mp3`,
   })
 }
 
